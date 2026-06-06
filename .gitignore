@@ -1,0 +1,26 @@
+
+# Virtual environment
+venv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Sensitive / generated data
+.env
+*.env
+*.pkl
+
+# Chrome binaries
+chrome-win64/
+chromedriver-win64/
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Optional
+.vscode/
