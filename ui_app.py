@@ -150,7 +150,7 @@ def start_pipeline():
                         f"Store {str(row['Store']).ljust(4)} | "
                         f"Door D-{str(row['Door']).zfill(3)} | "
                         f"{row['Total Cartons']} cartons"
-                    )
+                )
 
                 details_text.config(state="normal")
 
@@ -251,8 +251,8 @@ details_text = tk.Text(
     details_frame,
     height=10,
     width=50,
-    wrap="word",
-    font=("Arial", 9)
+    wrap="none",
+    font=("Consolas", 10)
 )
 
 details_text.pack(
