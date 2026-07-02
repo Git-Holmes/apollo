@@ -17,10 +17,9 @@ def create_driver():
 
     chrome_options = Options()
     chrome_options.add_argument(f"--user-data-dir={session_path}")
-    chrome_options.add_argument("--start-maximized")    
+    chrome_options.add_argument("--start-maximized")
     chrome_options.add_argument("--no-first-run")
     chrome_options.add_argument("--no-default-browser-check")
-
 
     return webdriver.Chrome(options=chrome_options)
 
@@ -71,10 +70,14 @@ def login_if_needed(driver, wait):
         username = elements[0]
         password = driver.find_element(By.ID, "password")
 
+        username.clear()
         username.send_keys(USER_ID)
+
+        password.clear()
         password.send_keys(PASSWORD)
 
         driver.find_element(By.ID, "submit-button").click()
+
         print("✅ Login submitted")
 
     print("⏳ Waiting for Apollo to load...")

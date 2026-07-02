@@ -2,12 +2,33 @@
 import requests
 import pandas as pd
 import urllib3
-from datetime import datetime
 import pytz
+from datetime import datetime
+from zoneinfo import ZoneInfo
+
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 API_URL = "https://apollo-bff-proxy.prod.target.com/proxy/warehouse-data-services/shipping_status/v3"
+
+def convert_header_timestamp(date_header):
+    if not date_header:
+        return ""
+
+    try:
+        dt = datetime.strptime(
+            date_header,
+            "%a, %d %b %Y %H:%M:%S GMT"
+        )
+
+        dt = dt.replace(tzinfo=ZoneInfo("UTC"))
+        dt = dt.astimezone(ZoneInfo("America/Los_Angeles"))
+
+        return dt.strftime("%b %d, %I:%M %p PDT")
+
+    except Exception as e:
+        print(f"⚠️ Timestamp conversion failed: {e}")
+        return ""
 
 
 # ✅ ✅ TIMESTAMP FORMATTER (SAFE)
@@ -43,6 +64,13 @@ def fetch_apollo_data(token, location_id=593):
     }
 
     response = requests.get(API_URL, headers=headers, params=params, verify=False)
+
+        # ✅ Extract API refresh timestamp
+    refresh_timestamp = convert_header_timestamp(
+    response.headers.get("Date")
+)
+
+    print(f"🕒 API Header Timestamp: {refresh_timestamp}")
 
     if response.status_code != 200:
         raise Exception(f"❌ API call failed: {response.status_code}")
@@ -111,4 +139,4 @@ def fetch_apollo_data(token, location_id=593):
 
     print("✅ API data mapped successfully")
 
-    return df
+    return df, refresh_timestamp

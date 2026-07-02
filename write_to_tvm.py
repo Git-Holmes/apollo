@@ -6,7 +6,7 @@ TVM_PATH = r"C:\Users\z0034gl\Documents\python_projects\apollo\TVM Calculator - 
 FILE_NAME = "TVM Calculator - AutoImport.xlsm"
 
 
-def write_to_tvm(df, timestamp):
+def write_to_tvm(df, timestamp, threshold):
 
     try:
         excel = win32com.client.GetActiveObject("Excel.Application")
@@ -40,6 +40,9 @@ def write_to_tvm(df, timestamp):
     # ✅ WRITE TIMESTAMP
     if timestamp:
         ws.Range("AB1").Value = timestamp
+    
+    # ✅ Update threshold
+    ws.Range("Z1").Value = threshold
 
     if not wb.ReadOnly:
         wb.Save()
